@@ -1,0 +1,37 @@
+
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Environment variables
+.env
+
+# Build output
+dist/
+build/
+tmp/
+temp/
+coverage/
+
+# Mac system files
+.DS_Store
+
+# VSCode
+.vscode/
+
+# Others (remove/add as needed)
+*.bak
+*.tmp
