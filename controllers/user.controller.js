@@ -10,19 +10,39 @@ const get_users = async (req, res) => {
   }
 };
 
-const create_user = async (req,res)=>{
+const create_user = async (req, res) => {
   console.log('Request body:', req.body);
   try {
-      const password = req.body.password;
-      const hash = await bcrypt.hash(password,10);
+    const password = req.body.password;
+    const hash = await bcrypt.hash(password, 10);
 
-      const user = await User.create({...req.body,password: hash});
-      res.status(200).json(user);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
+    const user = await User.create({ ...req.body, password: hash });
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const login = async (req, res) => {
+  try {
+    const user = await User.findOne({name: req.body.name});
+    console.log('User from DB:', user); // <-- log user doc
+
+    if (!user) {
+      return res.status(400).send("cannot find user");
     }
+
+    const match =await bcrypt.compare(req.body.password, user.password);
+    if (match) {
+      res.send("login successful");
+    } else {
+      res.status(401).send("login failed");
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 module.exports = {
-    get_users, create_user,
+  get_users, create_user, login,
 };

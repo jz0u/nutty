@@ -18,12 +18,17 @@ const log_route = require("./routes/log.route.js")
 app.use("/api/logs",log_route);
 
 const user_route = require("./routes/user.route.js")
-app.use("/api/users",user_route)
+app.use("/api/users",user_route);
 
 //pages
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/homepage/homepage.html"));
 });
+
+app.get("/login",(req,res) => {
+  res.sendFile(path.join(__dirname, "public/loginpage/loginpage.html"));
+});
+
 
 app.get("/register", (req,res) => {
   res.sendFile(path.join(__dirname,"public/registerpage/registerpage.html"));

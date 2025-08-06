@@ -5,6 +5,26 @@
   </head>
 
   <body>
-     
+    <form action="/api/users/login" method="post">
+            <div>
+                <label for="username_in"> username:</label>
+                <input type = "text" id = "username_in" name ="name">
+            </div>
+            <div>
+                <label for="email_in"> email:</label>
+                <input type = "text" id = "email_in" name ="email">
+            </div>
+            <div>
+                <label for="password_in"> password:</label>
+                <input type = "password" id ="password_in" name="password">
+            </div>
+            <div>
+                <input type = "reset">
+            </div>
+            <div>
+                <input type ="submit">
+            </div>
+
+        </form>
   </body>
 </html>
