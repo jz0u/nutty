@@ -10,6 +10,7 @@ const DB_URI = process.env.mongodb_uri;
 
 // middleware
 app.use(express.json());
+app.use(express.static("public"));
 
 // routes
 const log_route = require("./routes/log.route.js")
@@ -21,6 +22,10 @@ app.use("/api/users",user_route)
 //pages
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/homepage/homepage.html"));
+});
+
+app.get("/register", (req,res) => {
+  res.sendFile(path.join(__dirname,"public/registerpage/registerpage.html"));
 });
 
 mongoose
