@@ -11,6 +11,7 @@ const DB_URI = process.env.mongodb_uri;
 // middleware
 app.use(express.json());
 app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
 
 // routes
 const log_route = require("./routes/log.route.js")
