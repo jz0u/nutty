@@ -29,6 +29,16 @@ app.get("/api/logs", async (req, res) => {
   }
 });
 
+app.get("/api/log/:id", async (req,res) => {
+  try {
+    const {id} = req.params;
+    const log = await Log.findById(id);
+    res.status(200).json(log);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 mongoose
   .connect(DB_URI)
   .then(() => {
