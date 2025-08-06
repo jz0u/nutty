@@ -39,6 +39,22 @@ app.get("/api/log/:id", async (req,res) => {
   }
 });
 
+//update
+app.put("/api/log/:id", async (req,res) => {
+  try {   
+    const {id} = req.params;
+    const log = await Log.findByIdAndUpdate(id, req.body);
+    if (!log){
+        return res.status(404).json({ message: "entry not found" })
+    }
+    const updated = await Log.findById(id);
+    res.status(200).json(updated);
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 mongoose
   .connect(DB_URI)
   .then(() => {
