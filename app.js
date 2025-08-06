@@ -29,9 +29,12 @@ app.get("/login",(req,res) => {
   res.sendFile(path.join(__dirname, "public/loginpage/loginpage.html"));
 });
 
-
 app.get("/register", (req,res) => {
   res.sendFile(path.join(__dirname,"public/registerpage/registerpage.html"));
+});
+
+app.get("/dashboard",(req,res)=>{
+  res.sendFile(path.join(__dirname,"public/dashboard/dashboardpage.html"))
 });
 
 mongoose
