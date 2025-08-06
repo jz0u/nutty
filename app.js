@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const PORT = 3000;
-const log_route = require("./routes/log.route.js")
 const Log = require("./models/log.model.js");
 const mongoose = require("mongoose");
 const path = require("path");
@@ -13,7 +12,11 @@ const DB_URI = process.env.mongodb_uri;
 app.use(express.json());
 
 // routes
+const log_route = require("./routes/log.route.js")
 app.use("/api/logs",log_route);
+
+const user_route = require("./routes/user.route.js")
+app.use("/api/users",user_route)
 
 //pages
 app.get("/", (req, res) => {
