@@ -44,7 +44,7 @@ app.get("/register", (req,res) => {
 });
 
 app.get("/dashboard",(req,res)=>{
-  res.sendFile(path.join(__dirname,"public/dashboard/dashboardpage.html"))
+  res.sendFile(path.join(__dirname,"public/dashboardpage/dashboardpage.html"))
 });
 
 mongoose

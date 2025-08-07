@@ -27,15 +27,18 @@ const create_user = async (req, res) => {
 
 const login = async (req, res) => {
   try {
+    //authentication
     const user = await User.findOne({ name: req.body.name });
     if (!user) {
       return res.status(400).send("cannot find user");
     }
     const match = await bcrypt.compare(req.body.password, user.password);
-    if (match) {
+    if (match) {//authenticated
+      console.log(user);
       const payload = { id: user._id, name: user.name };
       const access_token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET);
-      res.json({access_token: access_token});
+      console.log(access_token)
+      res.json({access_token});
     } else {
       res.status(401).send("login failed");
     }
