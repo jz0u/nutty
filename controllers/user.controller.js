@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user.model.js");
-require("dotenv");
 const jwt = require("jsonwebtoken");
+const env = require("../config/env");
 
 const get_users = async (req, res) => {
   try {
@@ -46,8 +46,8 @@ const login = async (req, res) => {
     if (match) {
       // authenticated
       const payload = { id: user._id, name: user.name };
-      const access_token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
-      const refresh_token = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
+      const access_token = jwt.sign(payload, env.accessTokenSecret, { expiresIn: "15m" });
+      const refresh_token = jwt.sign(payload, env.refreshTokenSecret, { expiresIn: "7d" });
       res.json({ access_token: access_token, refresh_token: refresh_token });
     } else {
       res.status(401).json({ message: "invalid credentials" });
@@ -66,14 +66,14 @@ const refresh = async (req, res) => {
     }
 
     // verify refresh token
-    jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET, (error, user) => {
+    jwt.verify(refresh_token, env.refreshTokenSecret, (error, user) => {
       if (error) {
         return res.status(403).json({ message: "invalid refresh token" });
       }
       
       // generate new access token
       const payload = { id: user.id, name: user.name };
-      const new_access_token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
+      const new_access_token = jwt.sign(payload, env.accessTokenSecret, { expiresIn: "15m" });
       
       res.json({ access_token: new_access_token });
     });

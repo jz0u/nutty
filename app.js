@@ -1,37 +1,19 @@
 const express = require("express");
 const app = express();
-const PORT = 3000;
 const mongoose = require("mongoose");
 const path = require("path");
-const jwt = require("jsonwebtoken");
 
-require("dotenv").config();
-const DB_URI = process.env.mongodb_uri;
+const env = require("./config/env");
+const apiRouter = require("./routes");
+const { errorHandler } = require("./middleware/error");
 
 // middleware
 app.use(express.json());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
-function authenticate_token(req, res, next) {
-  const auth_header = req.headers["authorization"];
-  const token = auth_header && auth_header.split(" ")[1];
-  
-  if (token == null) return res.sendStatus(401);
-  
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, user) => {
-    if (error) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
-}
-
-// routes
-const log_route = require("./routes/log.route.js");
-app.use("/api/logs", authenticate_token, log_route);
-
-const user_route = require("./routes/user.route.js");
-app.use("/api/users", user_route);
+// api routes
+app.use("/api", apiRouter);
 
 // pages
 app.get("/", (req, res) => {
@@ -50,12 +32,15 @@ app.get("/dashboard", (req, res) => {
   res.sendFile(path.join(__dirname, "public/dashboardpage/dashboardpage.html"));
 });
 
+// error handler
+app.use(errorHandler);
+
 mongoose
-  .connect(DB_URI)
+  .connect(env.mongodbUri)
   .then(() => {
     console.log("\nconnected to atlas\n");
-    app.listen(PORT, () =>
-      console.log(`\nserver running on http://localhost:${PORT}\n`)
+    app.listen(env.port, () =>
+      console.log(`\nserver running on http://localhost:${env.port}\n`)
     );
   })
   .catch(() => {
