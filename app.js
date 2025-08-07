@@ -12,39 +12,42 @@ const DB_URI = process.env.mongodb_uri;
 app.use(express.json());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
-function authenticate_token(req,res,next){
+
+function authenticate_token(req, res, next) {
   const auth_header = req.headers["authorization"];
   const token = auth_header && auth_header.split(" ")[1];
+  
   if (token == null) return res.sendStatus(401);
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error,user)=>{
-    if(error) return res.sendStatus(403);
+  
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, user) => {
+    if (error) return res.sendStatus(403);
     req.user = user;
     next();
   });
-};
+}
 
 // routes
-const log_route = require("./routes/log.route.js")
-app.use("/api/logs",authenticate_token,log_route);
+const log_route = require("./routes/log.route.js");
+app.use("/api/logs", authenticate_token, log_route);
 
-const user_route = require("./routes/user.route.js")
-app.use("/api/users",user_route);
+const user_route = require("./routes/user.route.js");
+app.use("/api/users", user_route);
 
-//pages
+// pages
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/homepage/homepage.html"));
 });
 
-app.get("/login",(req,res) => {
+app.get("/login", (req, res) => {
   res.sendFile(path.join(__dirname, "public/loginpage/loginpage.html"));
 });
 
-app.get("/register", (req,res) => {
-  res.sendFile(path.join(__dirname,"public/registerpage/registerpage.html"));
+app.get("/register", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/registerpage/registerpage.html"));
 });
 
-app.get("/dashboard",(req,res)=>{
-  res.sendFile(path.join(__dirname,"public/dashboardpage/dashboardpage.html"))
+app.get("/dashboard", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/dashboardpage/dashboardpage.html"));
 });
 
 mongoose
