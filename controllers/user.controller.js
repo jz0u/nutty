@@ -37,7 +37,7 @@ const login = async (req, res) => {
       console.log(user);
       const payload = { id: user._id, name: user.name };
       const access_token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET);
-      console.log(access_token)
+      console.log(access_token);
       res.json({access_token});
     } else {
       res.status(401).send("login failed");
