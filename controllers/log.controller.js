@@ -21,7 +21,7 @@ const get_log = async (req, res) => {
 
 const create_log = async (req, res) => {
   try {
-    const log = await Log.create(req.body);
+    const log = await Log.create({...req.body, user: req.user.id});
     res.status(200).json(log);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -56,10 +56,21 @@ const delete_log = async (req, res) => {
   }
 };
 
+const get_logs_user = async (req, res) => {
+  try {
+   // Find logs where user equals the logged-in user's id
+    const logs = await Log.find({ user: req.user.id });
+    res.json(logs);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   get_logs,
   get_log,
   create_log,
   edit_log,
   delete_log,
+  get_logs_user,
 };

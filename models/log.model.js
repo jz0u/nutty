@@ -9,17 +9,17 @@ const LogSchema = mongoose.Schema(
     },
     name: {
       type: String,
-      require: [true, "name is a string"],
+      required: [true, "name is a string"],
     },
 
     calorie: {
       type: Number,
-      require: [true, "calorie is a number"],
+      required: [true, "calorie is a number"],
     },
 
     serving_size: {
       type: Number,
-      require: [true, "serving_size is a number"],
+      required: [true, "serving_size is a number"],
     },
 
     time: {
