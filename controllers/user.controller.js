@@ -1,5 +1,7 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user.model.js");
+require("dotenv");
+const jwt = require("jsonwebtoken");
 
 const get_users = async (req, res) => {
   try {
@@ -11,7 +13,7 @@ const get_users = async (req, res) => {
 };
 
 const create_user = async (req, res) => {
-  console.log('Request body:', req.body);
+  console.log("Request body:", req.body);
   try {
     const password = req.body.password;
     const hash = await bcrypt.hash(password, 10);
@@ -25,16 +27,15 @@ const create_user = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const user = await User.findOne({name: req.body.name});
-    console.log('User from DB:', user); // <-- log user doc
-
+    const user = await User.findOne({ name: req.body.name });
     if (!user) {
       return res.status(400).send("cannot find user");
     }
-
-    const match =await bcrypt.compare(req.body.password, user.password);
+    const match = await bcrypt.compare(req.body.password, user.password);
     if (match) {
-      res.send("login successful");
+      const payload = { id: user._id, name: user.name };
+      const access_token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET);
+      res.json({access_token: access_token});
     } else {
       res.status(401).send("login failed");
     }
@@ -44,5 +45,7 @@ const login = async (req, res) => {
 };
 
 module.exports = {
-  get_users, create_user, login,
+  get_users,
+  create_user,
+  login,
 };
