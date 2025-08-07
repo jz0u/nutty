@@ -5,32 +5,34 @@ const LogSchema = mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true
+      required: [true, "user is required"]
     },
     name: {
       type: String,
-      required: [true, "name is a string"],
+      required: [true, "food name is required"],
+      trim: true
     },
-
     calorie: {
       type: Number,
-      required: [true, "calorie is a number"],
+      required: [true, "calorie count is required"],
+      min: [0, "calories cannot be negative"]
     },
-
     serving_size: {
       type: Number,
-      required: [true, "serving_size is a number"],
+      required: [true, "serving size is required"],
+      min: [0, "serving size cannot be negative"]
     },
-
     time: {
       type: String,
+      required: [true, "time is required"]
     },
     date: {
       type: String,
-    },
+      required: [true, "date is required"]
+    }
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 );
 
