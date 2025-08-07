@@ -1,9 +1,9 @@
 const express = require("express");
 const app = express();
 const PORT = 3000;
-const Log = require("./models/log.model.js");
 const mongoose = require("mongoose");
 const path = require("path");
+const jwt = require("jsonwebtoken");
 
 require("dotenv").config();
 const DB_URI = process.env.mongodb_uri;
