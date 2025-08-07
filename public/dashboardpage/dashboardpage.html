@@ -3,25 +3,24 @@
   <head>
     <title>dashboard</title>
     <script src="/dashboardpage/dashboardpage.js" defer></script>
+    <link rel="stylesheet" href="../styles/style.css">
   </head>
   <body>
-    <div>
-      <h1>Food Logger Dashboard</h1>
-      
+    <div class="border">
       <form action="/api/logs" method="post">
         <div>
           <label for="food_in">food:</label>
-          <input type="text" id="food_in" name ="name"/>
+          <input type="text" id="food_in" name="name" />
         </div>
 
         <div>
           <label for="calorie_in">calorie:</label>
-          <input type="number" id="calorie_in" name = "calorie" />
+          <input type="number" id="calorie_in" name="calorie" />
         </div>
 
         <div>
-        <label for="serving_size_in">serving size:</label>
-          <input type="number" id ="serving_size_in" name="serving_size"/>
+          <label for="serving_size_in">serving size:</label>
+          <input type="number" id="serving_size_in" name="serving_size" />
         </div>
 
         <div>
@@ -32,10 +31,9 @@
           <input type="submit" />
         </div>
       </form>
-      
-      <div style="margin-top: 20px;">
-        <button id="logout_btn" type="button">Logout</button>
-      </div>
+    </div>
+    <div>
+      <button id="logout_btn" type="button">Logout</button>
     </div>
   </body>
 </html>
