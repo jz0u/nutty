@@ -9,3 +9,7 @@
 .show_box{
   display:block;
 }
+
+#dashboardbtndiv{
+  display: flex;
+}

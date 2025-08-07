@@ -5,6 +5,7 @@ form.addEventListener("submit", e => {
   e.preventDefault();
   handle_log_submittion();
 });
+window.addEventListener("load",fetch_username)
 
 logoutBtn.addEventListener("click", () => {
   handle_logout();
@@ -133,3 +134,53 @@ const handle_log_submittion = async () => {
     alert("Network error. Please try again.");
   }
 };
+
+const create_entry_btn = document.querySelector("#create_btn");
+let is_open = false;
+
+create_entry_btn.addEventListener("click", () => {
+  handle_open_close();
+});
+
+const handle_open_close = () => {
+  if (is_open){
+    close_form();
+    is_open = false;
+  }
+  else{
+    open_form();
+    is_open = true;
+  }
+}
+
+const open_form = () => {
+  document.getElementById("formdiv").classList.add("show_box");
+};
+
+const close_form = () => {
+  document.getElementById("formdiv").classList.remove("show_box");
+  document.getElementById("food_in").value ="";
+  document.getElementById("calorie_in").value ="";
+  document.getElementById("serving_size_in").value ="";
+}
+
+// Function to fetch and display username
+async function fetch_username() {
+  try {
+    const response = await makeAuthenticatedRequest("api/users/me", {
+      method: "GET"
+    });
+
+    if (response.ok) {
+      const userData = await response.json();
+      const usernameElement = document.getElementById('username');
+      if (usernameElement && userData.name) {
+        usernameElement.textContent = userData.name;
+      }
+    } else {
+      console.error("Failed to fetch username");
+    }
+  } catch (error) {
+    console.error("Error fetching username:", error);
+  }
+}

@@ -3,33 +3,46 @@
   <head>
     <title>dashboard</title>
     <script src="/dashboardpage/dashboardpage.js" defer></script>
-    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../styles/style.css" />
   </head>
   <body>
     <div class="border">
+      <div id="welcome">
+        <h1>welcome, <span id="username">User</span>!</h1>
+      </div>
+    </div>
+    <div class="border">
+      <button id="create_btn">Create Entry</button>
+    </div>
+    <div id="formdiv" class="hide_box">
       <form action="/api/logs" method="post">
-        <div>
-          <label for="food_in">food:</label>
-          <input type="text" id="food_in" name="name" />
+        <div class ="border">
+          <div>
+            <label for="food_in">food:</label>
+            <input type="text" id="food_in" name="name" />
+          </div>
+
+          <div>
+            <label for="calorie_in">calorie:</label>
+            <input type="number" id="calorie_in" name="calorie" />
+          </div>
+
+          <div>
+            <label for="serving_size_in">serving size:</label>
+            <input type="number" id="serving_size_in" name="serving_size" />
+          </div>
         </div>
 
-        <div>
-          <label for="calorie_in">calorie:</label>
-          <input type="number" id="calorie_in" name="calorie" />
-        </div>
+        <div id = "dashboardbtndiv" class="border">
+          <div>
+            <input type="reset" />
+          </div>
 
-        <div>
-          <label for="serving_size_in">serving size:</label>
-          <input type="number" id="serving_size_in" name="serving_size" />
+          <div>
+            <input type="submit" />
+          </div>
         </div>
-
-        <div>
-          <input type="reset" />
-        </div>
-
-        <div>
-          <input type="submit" />
-        </div>
+        
       </form>
     </div>
     <div>
