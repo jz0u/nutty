@@ -1,9 +1,92 @@
 const form = document.querySelector("form");
+const logoutBtn = document.getElementById("logout_btn");
 
 form.addEventListener("submit", e => {
   e.preventDefault();
   handle_log_submittion();
 });
+
+logoutBtn.addEventListener("click", () => {
+  handle_logout();
+});
+
+// Function to handle logout
+const handle_logout = () => {
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("refresh_token");
+  alert("Logged out successfully!");
+  window.location.href = "/login";
+};
+
+// Function to refresh access token
+const refreshAccessToken = async () => {
+  const refresh_token = localStorage.getItem("refresh_token");
+  
+  if (!refresh_token) {
+    throw new Error("No refresh token available");
+  }
+
+  try {
+    const response = await fetch("api/users/refresh", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ refresh_token })
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem("access_token", data.access_token);
+      return data.access_token;
+    } else {
+      throw new Error("Failed to refresh token");
+    }
+  } catch (error) {
+    console.error("Token refresh error:", error);
+    throw error;
+  }
+};
+
+// Function to make authenticated API calls with automatic token refresh
+const makeAuthenticatedRequest = async (url, options = {}) => {
+  let token = localStorage.getItem("access_token");
+  
+  if (!token) {
+    throw new Error("No access token available");
+  }
+
+  // Add authorization header
+  options.headers = {
+    ...options.headers,
+    "Authorization": `Bearer ${token}`
+  };
+
+  try {
+    let response = await fetch(url, options);
+    
+    // If token expired, try to refresh and retry
+    if (response.status === 401 || response.status === 403) {
+      try {
+        token = await refreshAccessToken();
+        options.headers["Authorization"] = `Bearer ${token}`;
+        response = await fetch(url, options);
+      } catch (refreshError) {
+        // Refresh failed, redirect to login
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        alert("Session expired. Please login again.");
+        window.location.href = "/login";
+        throw refreshError;
+      }
+    }
+    
+    return response;
+  } catch (error) {
+    console.error("API request error:", error);
+    throw error;
+  }
+};
 
 const handle_log_submittion = async () => {
   // get form data
@@ -29,20 +112,11 @@ const handle_log_submittion = async () => {
     date: date
   };
 
-  // get token
-  const token = localStorage.getItem("access_token");
-  if (!token) {
-    alert("No authentication token found. Please login again.");
-    window.location.href = "/login";
-    return;
-  }
-  
   try {
-    const response = await fetch("api/logs", {
+    const response = await makeAuthenticatedRequest("api/logs", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(log_data)
     });

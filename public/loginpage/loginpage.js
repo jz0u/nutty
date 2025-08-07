@@ -29,6 +29,7 @@ const handle_login = async () => {
     if (response.ok) {
       const data = await response.json();
       localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("refresh_token", data.refresh_token);
       window.location.href = "/dashboard";
     } else {
       const error_data = await response.json();

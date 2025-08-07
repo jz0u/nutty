@@ -46,12 +46,37 @@ const login = async (req, res) => {
     if (match) {
       // authenticated
       const payload = { id: user._id, name: user.name };
-      const access_token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET,{expiresIn:"15m"});
-      const refresh_token = jwt.sign(payload,process.env.REFRESH_TOKEN_SECRET,{expiresIn:"7d"})
-      res.json({ acess_token: access_token, refresh_token: refresh_token });
+      const access_token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
+      const refresh_token = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
+      res.json({ access_token: access_token, refresh_token: refresh_token });
     } else {
       res.status(401).json({ message: "invalid credentials" });
     }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const refresh = async (req, res) => {
+  try {
+    const { refresh_token } = req.body;
+    
+    if (!refresh_token) {
+      return res.status(401).json({ message: "refresh token is required" });
+    }
+
+    // verify refresh token
+    jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET, (error, user) => {
+      if (error) {
+        return res.status(403).json({ message: "invalid refresh token" });
+      }
+      
+      // generate new access token
+      const payload = { id: user.id, name: user.name };
+      const new_access_token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
+      
+      res.json({ access_token: new_access_token });
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -61,4 +86,5 @@ module.exports = {
   get_users,
   create_user,
   login,
+  refresh,
 };
