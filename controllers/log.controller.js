@@ -1,18 +1,23 @@
 const Log = require("../models/log.model.js");
 
+// Regular user: get only own logs
 const get_logs = async (req, res) => {
   try {
-    const logs = await Log.find({});
+    const logs = await Log.find({ user: req.user.id });
     res.status(200).json(logs);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
+// Regular user: get a specific log only if owned
 const get_log = async (req, res) => {
   try {
     const { id } = req.params;
-    const log = await Log.findById(id);
+    const log = await Log.findOne({ _id: id, user: req.user.id });
+    if (!log) {
+      return res.status(404).json({ message: "entry not found" });
+    }
     res.status(200).json(log);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -31,12 +36,11 @@ const create_log = async (req, res) => {
 const edit_log = async (req, res) => {
   try {
     const { id } = req.params;
-    const log = await Log.findByIdAndUpdate(id, req.body);
+    const log = await Log.findOneAndUpdate({ _id: id, user: req.user.id }, req.body, { new: true });
     if (!log) {
       return res.status(404).json({ message: "entry not found" });
     }
-    const updated = await Log.findById(id);
-    res.status(200).json(updated);
+    res.status(200).json(log);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -45,22 +49,35 @@ const edit_log = async (req, res) => {
 const delete_log = async (req, res) => {
   try {
     const { id } = req.params;
-    const log = await Log.findByIdAndDelete(id);
+    const log = await Log.findOneAndDelete({ _id: id, user: req.user.id });
     if (!log) {
       return res.status(404).json({ message: "entry not found" });
     }
-
     res.status(200).json("entry deleted successfully");
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-const get_logs_user = async (req, res) => {
+// Admin: get all logs
+const admin_get_logs = async (req, res) => {
   try {
-   // Find logs where user equals the logged-in user's id
-    const logs = await Log.find({ user: req.user.id });
-    res.json(logs);
+    const logs = await Log.find({});
+    res.status(200).json(logs);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Admin: get any log by id
+const admin_get_log = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const log = await Log.findById(id);
+    if (!log) {
+      return res.status(404).json({ message: "entry not found" });
+    }
+    res.status(200).json(log);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -72,5 +89,6 @@ module.exports = {
   create_log,
   edit_log,
   delete_log,
-  get_logs_user,
+  admin_get_logs,
+  admin_get_log,
 };

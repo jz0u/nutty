@@ -5,7 +5,7 @@ const env = require("../config/env");
 
 const get_users = async (req, res) => {
   try {
-    const users = await User.find({});
+    const users = await User.find({}).select("-password");
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -15,15 +15,16 @@ const get_users = async (req, res) => {
 const create_user = async (req, res) => {
   try {
     // basic validation
-    if (!req.body.name || !req.body.email || !req.body.password) {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
       return res.status(400).json({ message: "name, email, and password are required" });
     }
 
-    const password = req.body.password;
     const hash = await bcrypt.hash(password, 10);
 
-    const user = await User.create({ ...req.body, password: hash });
-    res.status(201).json(user);
+    const user = await User.create({ name, email, password: hash, role: "user" });
+    const safeUser = { id: user._id, name: user.name, email: user.email, role: user.role };
+    res.status(201).json(safeUser);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -82,9 +83,22 @@ const refresh = async (req, res) => {
   }
 };
 
+const get_me = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "user not found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   get_users,
   create_user,
   login,
   refresh,
+  get_me,
 };
