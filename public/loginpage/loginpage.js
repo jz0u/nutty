@@ -20,6 +20,8 @@ const handle_login = async() =>{
           body: JSON.stringify(login_data)
         });
         if (response.ok){
+            const data = await response.json();
+
             localStorage.setItem("access_token",data.access_token);
             window.location.href="/dashboard";
         }
