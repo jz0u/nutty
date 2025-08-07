@@ -46,8 +46,9 @@ const login = async (req, res) => {
     if (match) {
       // authenticated
       const payload = { id: user._id, name: user.name };
-      const access_token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET);
-      res.json({ access_token });
+      const access_token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET,{expiresIn:"15m"});
+      const refresh_token = jwt.sign(payload,process.env.REFRESH_TOKEN_SECRET,{expiresIn:"7d"})
+      res.json({ acess_token: access_token, refresh_token: refresh_token });
     } else {
       res.status(401).json({ message: "invalid credentials" });
     }
