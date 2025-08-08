@@ -20,7 +20,7 @@ const handle_login = async () => {
   };
 
   try {
-    const response = await fetch("api/users/login", {
+    const response = await fetch("/api/users/login", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(login_data)

@@ -1,28 +1,37 @@
 <!DOCTYPE html>
-<html>
-  <head> 
-     <title>login</title>
-     <script src="../loginpage/loginpage.js" defer></script>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nutty — Log in</title>
+    <link rel="stylesheet" href="/styles/style.css" />
+    <script src="/loginpage/loginpage.js" defer></script>
   </head>
 
-  <body>
-    <form id="login_form" action="/api/users/login" method="post">
-            <div>
-                <label for="username_in"> username:</label>
-                <input type = "text" id = "username_in" name ="name">
-            </div>
-            
-            <div>
-                <label for="password_in"> password:</label>
-                <input type = "password" id ="password_in" name="password">
-            </div>
-            <div>
-                <input type = "reset">
-            </div>
-            <div>
-                <input type ="submit">
-            </div>
-
-        </form>
+  <body class="auth">
+    <header class="auth-header">
+      <a href="/" class="home-logo" aria-label="Go to homepage" title="Home">🥜</a>
+      <h1 class="home-title">Nutty</h1>
+      <p class="home-subtitle">Welcome back</p>
+    </header>
+    <main class="auth-main">
+      <form id="login_form" class="auth-card" novalidate>
+        <div class="auth-field">
+          <label class="auth-label" for="username_in">Username</label>
+          <input class="auth-input" type="text" id="username_in" name="name" autocomplete="username" required />
+        </div>
+        <div class="auth-field">
+          <label class="auth-label" for="password_in">Password</label>
+          <input class="auth-input" type="password" id="password_in" name="password" autocomplete="current-password" required />
+        </div>
+        <div class="auth-actions">
+          <button type="submit" class="home-btn home-btn-primary">Log in</button>
+          <a href="/register" class="auth-link">New here? Create an account</a>
+        </div>
+      </form>
+    </main>
+    <footer class="home-footer">
+      <small>Track what you eat. Nothing more.</small>
+    </footer>
   </body>
 </html>
