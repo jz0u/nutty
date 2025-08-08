@@ -12,12 +12,13 @@
 
 /* --- Homepage (minimalistic) --- */
 .home {
-  --home-bg: #ffffff;
-  --home-fg: #0f172a; /* slate-900 */
-  --home-muted: #64748b; /* slate-500 */
-  --home-accent: #0ea5e9; /* sky-500 */
-  --home-accent-pressed: #0284c7; /* sky-600 */
-  --home-border: #e2e8f0; /* slate-200 */
+  /* Nutty palette */
+  --home-bg: #F3E9DC;      /* Cream */
+  --home-fg: #5E3023;      /* Brownie */
+  --home-muted: #895737;   /* Coffee */
+  --home-accent: #C08552;  /* Caramel */
+  --home-accent-pressed: #A66E45; /* Darker Caramel */
+  --home-border: #E4D7C8;  /* Soft cream border */
 
   margin: 0;
   min-height: 100vh;
@@ -99,9 +100,7 @@
   color: var(--home-fg);
 }
 
-.home-btn-secondary:hover {
-  background: #f1f5f9; /* slate-100 */
-}
+.home-btn-secondary:hover { background: #EADCCB; }
 
 .home-footer {
   border-top: 1px solid var(--home-border);
@@ -117,12 +116,13 @@
 
 /* --- Auth pages (register/login) --- */
 .auth {
-  /* reuse the same tokens as home for consistency */
-  --home-bg: #ffffff;
-  --home-fg: #0f172a;
-  --home-muted: #64748b;
-  --home-accent: #0ea5e9;
-  --home-border: #e2e8f0;
+  /* Nutty palette (same as home) */
+  --home-bg: #F3E9DC;      /* Cream */
+  --home-fg: #5E3023;      /* Brownie */
+  --home-muted: #895737;   /* Coffee */
+  --home-accent: #C08552;  /* Caramel */
+  --home-accent-pressed: #A66E45; /* Darker Caramel */
+  --home-border: #E4D7C8;  /* Soft cream border */
   margin: 0;
   min-height: 100vh;
   background: var(--home-bg);
@@ -135,11 +135,12 @@
 }
 
 .dashboard {
-  --home-bg: #ffffff;
-  --home-fg: #0f172a;
-  --home-muted: #64748b;
-  --home-accent: #0ea5e9;
-  --home-border: #e2e8f0;
+  /* Nutty dashboard palette */
+  --home-bg: #F3E9DC;      /* Cream */
+  --home-fg: #5E3023;      /* Brownie */
+  --home-muted: #895737;   /* Coffee */
+  --home-accent: #C08552;  /* Caramel */
+  --home-border: #E4D7C8;  /* Soft cream border */
   margin: 0;
   min-height: 100vh;
   background: var(--home-bg);
@@ -166,7 +167,8 @@
 }
 .btn:active { transform: translateY(1px); }
 .btn-primary { background: var(--home-accent); color: #fff; border-color: transparent; }
-.btn-primary:hover { background: #0284c7; }
+/* Dashboard-specific hover color using palette */
+.dashboard .btn-primary:hover { background: #A66E45; }
 .btn-secondary { background: #f8fafc; }
 .btn-ghost { background: transparent; }
 
