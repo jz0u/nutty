@@ -238,6 +238,10 @@ function render_logs(logs) {
                 <td>${log.name ?? ''}</td>
                 <td>${log.calorie ?? ''}</td>
                 <td>${log.serving_size ?? ''}</td>
+                <td>
+                  <button class="edit-btn" data-id="${log._id}">Edit</button>
+                  <button class="delete-btn" data-id="${log._id}">Delete</button>
+                </td>
               </tr>
             `
           )
@@ -247,4 +251,144 @@ function render_logs(logs) {
   `;
 
   container.innerHTML = html;
+};
+
+document.getElementById("logsdiv").addEventListener("click", async (event) => {
+  const button = event.target;
+  const logId = button.getAttribute("data-id");
+  
+  if (!logId) return;
+
+  if (button.classList.contains("edit-btn")) {
+    handleEdit(logId);
+  } else if (button.classList.contains("delete-btn")) {
+    handleDelete(logId);
+  } else if (button.classList.contains("save-btn")) {
+    handleSave(logId);
+  } else if (button.classList.contains("cancel-btn")) {
+    handleCancel(button);
+  }
+});
+
+function handleEdit(logId) {
+  // Find the row for this log via the Edit button and closest tr (more compatible than :has)
+  const editButton = document.querySelector(`button.edit-btn[data-id="${logId}"]`);
+  if (!editButton) return;
+  const row = editButton.closest("tr");
+  if (!row) return;
+
+  // Get all data cells (skip the actions column)
+  const cells = row.querySelectorAll("td");
+  const dateCell = cells[0];
+  const timeCell = cells[1];
+  const foodCell = cells[2];
+  const calorieCell = cells[3];
+  const servingSizeCell = cells[4];
+  const actionsCell = cells[5];
+
+  // Store original values on the row dataset for safe cancel restore
+  row.dataset.origDate = dateCell.textContent;
+  row.dataset.origTime = timeCell.textContent;
+  row.dataset.origFood = foodCell.textContent;
+  row.dataset.origCalorie = calorieCell.textContent;
+  row.dataset.origServing = servingSizeCell.textContent;
+
+  // Replace cells with input fields
+  dateCell.innerHTML = `<input type="text" value="${row.dataset.origDate}" class="edit-input">`;
+  timeCell.innerHTML = `<input type="text" value="${row.dataset.origTime}" class="edit-input">`;
+  foodCell.innerHTML = `<input type="text" value="${row.dataset.origFood}" class="edit-input">`;
+  calorieCell.innerHTML = `<input type="number" value="${row.dataset.origCalorie}" class="edit-input">`;
+  servingSizeCell.innerHTML = `<input type="number" value="${row.dataset.origServing}" class="edit-input">`;
+
+  // Replace Edit/Delete with Save/Cancel
+  actionsCell.innerHTML = `
+    <button class="save-btn" data-id="${logId}">Save</button>
+    <button class="cancel-btn" data-id="${logId}">Cancel</button>
+  `;
+}
+
+async function handleSave(logId) {
+  // Find the row via the Save button
+  const saveButton = document.querySelector(`button.save-btn[data-id="${logId}"]`);
+  if (!saveButton) return;
+  const row = saveButton.closest("tr");
+  if (!row) return;
+
+  const cells = row.querySelectorAll("td");
+  const dateInput = cells[0].querySelector(".edit-input");
+  const timeInput = cells[1].querySelector(".edit-input");
+  const foodInput = cells[2].querySelector(".edit-input");
+  const calorieInput = cells[3].querySelector(".edit-input");
+  const servingInput = cells[4].querySelector(".edit-input");
+
+  const updateData = {
+    date: dateInput ? dateInput.value : row.dataset.origDate || "",
+    time: timeInput ? timeInput.value : row.dataset.origTime || "",
+    name: foodInput ? foodInput.value : row.dataset.origFood || "",
+    calorie: calorieInput ? parseInt(calorieInput.value) : parseInt(row.dataset.origCalorie || "0"),
+    serving_size: servingInput ? parseInt(servingInput.value) : parseInt(row.dataset.origServing || "0"),
+  };
+
+  try {
+    const response = await makeAuthenticatedRequest(`api/logs/${logId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updateData),
+    });
+
+    if (response.ok) {
+      // Refresh the table to reflect changes
+      await fetch_logs();
+    } else {
+      const error_data = await response.json().catch(() => ({}));
+      alert(error_data.message || "Failed to update entry");
+    }
+  } catch (error) {
+    console.error("Update error:", error);
+    alert("Network error. Please try again.");
+  }
+}
+
+function handleCancel(button) {
+  const row = button.closest("tr");
+  if (!row) return;
+
+  const cells = row.querySelectorAll("td");
+  const dateCell = cells[0];
+  const timeCell = cells[1];
+  const foodCell = cells[2];
+  const calorieCell = cells[3];
+  const servingSizeCell = cells[4];
+  const actionsCell = cells[5];
+
+  // Restore from dataset
+  dateCell.textContent = row.dataset.origDate || "";
+  timeCell.textContent = row.dataset.origTime || "";
+  foodCell.textContent = row.dataset.origFood || "";
+  calorieCell.textContent = row.dataset.origCalorie || "";
+  servingSizeCell.textContent = row.dataset.origServing || "";
+
+  const logId = button.getAttribute("data-id");
+  actionsCell.innerHTML = `
+    <button class="edit-btn" data-id="${logId}">Edit</button>
+    <button class="delete-btn" data-id="${logId}">Delete</button>
+  `;
+}
+
+async function handleDelete(logId) {
+  const confirmed = window.confirm("Are you sure you want to delete this entry?");
+  if (!confirmed) return;
+
+  try {
+    const response = await makeAuthenticatedRequest(`api/logs/${logId}`, { method: "DELETE" });
+    if (response.ok) {
+      await fetch_logs();
+    } else {
+      const error_data = await response.json().catch(() => ({}));
+      alert(error_data.message || "Failed to delete entry");
+    }
+  } catch (error) {
+    console.error("Delete error:", error);
+    alert("Network error. Please try again.");
+  }
 }
