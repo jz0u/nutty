@@ -232,8 +232,8 @@
   .logs-table .actions-col { width: 120px; }
 }
 
-.auth-header { text-align: center; padding: 40px 20px 8px; }
-.auth-main { display: grid; place-items: center; padding: 24px 20px; }
+.auth-header { text-align: center; padding: 16px 20px 0; }
+.auth-main { display: grid; justify-items: center; align-content: start; padding: 8px 20px 24px; }
 
 .auth-card {
   width: 100%;
