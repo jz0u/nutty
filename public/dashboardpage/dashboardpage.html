@@ -6,17 +6,21 @@
     <link rel="stylesheet" href="../styles/style.css" />
   </head>
   <body>
-    <div class="border">
-      <div id="welcome">
+    <div id="welcomediv" class="border">
+      <div id="welcome" class="border">
         <h1>welcome, <span id="username">User</span>!</h1>
       </div>
+      <div id="create_btn_div"class="border">
+        <button id="create_btn">Create Entry</button>
+      </div>
+      <div id="logoutdiv" class="border">
+        <button id="logout_btn" type="button">Logout</button>
+      </div>
     </div>
-    <div class="border">
-      <button id="create_btn">Create Entry</button>
-    </div>
+
     <div id="formdiv" class="hide_box">
       <form action="/api/logs" method="post">
-        <div class ="border">
+        <div class="border">
           <div>
             <label for="food_in">food:</label>
             <input type="text" id="food_in" name="name" />
@@ -33,7 +37,7 @@
           </div>
         </div>
 
-        <div id = "dashboardbtndiv" class="border">
+        <div id="dashboardbtndiv" class="border">
           <div>
             <input type="reset" />
           </div>
@@ -42,16 +46,10 @@
             <input type="submit" />
           </div>
         </div>
-        
       </form>
     </div>
-    <div id ="logsdiv" class="border">
-       <h3>
-        your logs:
-       </h3>
-    </div>
-    <div>
-      <button id="logout_btn" type="button">Logout</button>
+    <div id="logsdiv" class="border">
+      <h3>your logs:</h3>
     </div>
   </body>
 </html>
