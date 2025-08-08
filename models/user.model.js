@@ -4,21 +4,32 @@ const UserSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "name is a string"],
+      required: [true, "username is required"],
+      trim: true,
+      unique: true
     },
     email: {
       type: String,
-      required: [true, "email is a string"],
+      required: [true, "email is required"],
+      trim: true,
+      unique: true,
+      lowercase: true
     },
     password: {
       type: String,
-      required: [true, "password is a string"],
-    },
+      required: [true, "password is required"],
+      minlength: [6, "password must be at least 6 characters"]
+      },
+      role: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user",
+      }
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 );
 
-const User = mongoose.model("User",UserSchema);
+const User = mongoose.model("User", UserSchema);
 module.exports = User;

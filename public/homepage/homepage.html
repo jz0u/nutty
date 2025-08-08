@@ -1,12 +1,33 @@
 <!DOCTYPE html>
-<html>
-  <head> 
-     <title>home</title>
-     <script src="/homepage/homepage.js" defer></script>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nutty — Minimal Food Tracker</title>
+    <link rel="stylesheet" href="/styles/style.css" />
+    <script src="/homepage/homepage.js" defer></script>
   </head>
-
-  <body>
-     <button id="login_btn" onclick="go_to_loginpage()">login</button>
-     <button id="register_btn" onclick="go_to_registerpage()">register</button>
+  <body class="home">
+    <header class="home-header">
+      <a href="/" class="home-logo" aria-label="Go to homepage" title="Home">🥜</a>
+      <h1 class="home-title">Nutty</h1>
+      <p class="home-subtitle">Simple nutrition & food tracking</p>
+    </header>
+    <main class="home-main">
+      <section class="home-card" aria-label="Account actions">
+        <div class="home-actions">
+          <button class="home-btn home-btn-primary" id="login_btn" onclick="go_to_loginpage()">Log in</button>
+          <button class="home-btn home-btn-secondary" id="register_btn" onclick="go_to_registerpage()">Create account</button>
+        </div>
+      </section>
+      <ul class="home-features" aria-label="Highlights">
+        <li class="home-feature">✅ Quick food logging</li>
+        <li class="home-feature">🧘 Minimal, distraction‑free</li>
+        <li class="home-feature">🔒 Private by default</li>
+      </ul>
+    </main>
+    <footer class="home-footer">
+      <small>Track what you eat. Nothing more.</small>
+    </footer>
   </body>
 </html>
