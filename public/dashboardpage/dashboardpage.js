@@ -29,7 +29,7 @@ const refreshAccessToken = async () => {
   }
 
   try {
-    const response = await fetch("api/users/refresh", {
+    const response = await fetch("/api/users/refresh", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -116,7 +116,7 @@ const handle_log_submittion = async () => {
   };
 
   try {
-    const response = await makeAuthenticatedRequest("api/logs", {
+    const response = await makeAuthenticatedRequest("/api/logs", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -170,7 +170,7 @@ const close_form = () => {
 // Function to fetch and display username
 async function fetch_username() {
   try {
-    const response = await makeAuthenticatedRequest("api/users/me", {
+    const response = await makeAuthenticatedRequest("/api/users/me", {
       method: "GET",
     });
 
@@ -190,7 +190,7 @@ async function fetch_username() {
 
 async function fetch_logs() {
   try {
-    const response = await makeAuthenticatedRequest("api/logs", {
+    const response = await makeAuthenticatedRequest("/api/logs", {
       method: "GET",
     });
     if (response.ok){
@@ -272,6 +272,9 @@ document.getElementById("logsdiv").addEventListener("click", async (event) => {
 });
 
 function handleEdit(logId) {
+  // Ensure only one row is editable at a time
+  cancelAllEditsExcept(logId);
+
   // Find the row for this log via the Edit button and closest tr (more compatible than :has)
   const editButton = document.querySelector(`button.edit-btn[data-id="${logId}"]`);
   if (!editButton) return;
@@ -308,6 +311,18 @@ function handleEdit(logId) {
   `;
 }
 
+function cancelAllEditsExcept(logIdToKeep) {
+  const container = document.getElementById("logsdiv");
+  if (!container) return;
+  const saveButtons = container.querySelectorAll("button.save-btn");
+  saveButtons.forEach((btn) => {
+    const id = btn.getAttribute("data-id");
+    if (id !== String(logIdToKeep)) {
+      handleCancel(btn);
+    }
+  });
+}
+
 async function handleSave(logId) {
   // Find the row via the Save button
   const saveButton = document.querySelector(`button.save-btn[data-id="${logId}"]`);
@@ -331,7 +346,7 @@ async function handleSave(logId) {
   };
 
   try {
-    const response = await makeAuthenticatedRequest(`api/logs/${logId}`, {
+    const response = await makeAuthenticatedRequest(`/api/logs/${logId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updateData),
@@ -381,7 +396,7 @@ async function handleDelete(logId) {
   if (!confirmed) return;
 
   try {
-    const response = await makeAuthenticatedRequest(`api/logs/${logId}`, { method: "DELETE" });
+    const response = await makeAuthenticatedRequest(`/api/logs/${logId}`, { method: "DELETE" });
     if (response.ok) {
       await fetch_logs();
     } else {

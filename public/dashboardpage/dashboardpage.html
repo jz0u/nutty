@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Dashboard</title>
     <script src="/dashboardpage/dashboardpage.js" defer></script>
-    <link rel="stylesheet" href="../styles/style.css" />
+    <link rel="stylesheet" href="/styles/style.css" />
   </head>
   <body class="dashboard">
     <div class="dashboard-container">
       <header id="welcomediv" class="dashboard-header">
-        <h1 class="title">Welcome, <span id="username">User</span>!</h1>
+        <a href="/" class="home-logo" aria-label="Go to homepage" title="Home">🥜</a>
+        <h1 class="home-title">Nutty</h1>
+        <p class="home-subtitle">Welcome, <span id="username">User</span>!</p>
         <div class="header-actions">
           <button id="create_btn" class="btn btn-primary" type="button">Create Entry</button>
           <button id="logout_btn" class="btn btn-ghost" type="button">Logout</button>
