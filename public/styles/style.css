@@ -41,6 +41,17 @@
   padding: 24px 20px;
 }
 
+/* Homepage actions card */
+.home-card {
+  width: 100%;
+  max-width: 380px;
+  border: 1px solid var(--home-border);
+  border-radius: 16px;
+  padding: 16px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(2, 6, 23, 0.04);
+}
+
 .home-features {
   list-style: none;
   padding: 16px 0 0;
@@ -74,11 +85,8 @@
   font-size: 18px;
 }
 
-.home-actions {
-  display: inline-grid;
-  grid-auto-flow: column;
-  gap: 12px;
-}
+.home-actions { display: grid; gap: 12px; width: 100%; }
+.home-card .home-btn { width: 100%; }
 
 .home-btn {
   appearance: none;
