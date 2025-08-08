@@ -41,6 +41,16 @@
   padding: 24px 20px;
 }
 
+.home-features {
+  list-style: none;
+  padding: 16px 0 0;
+  margin: 18px 0 0;
+  display: grid;
+  gap: 8px;
+  color: var(--home-muted);
+}
+.home-feature { font-size: 15px; }
+
 .home-logo {
   font-size: 56px;
   line-height: 1;
