@@ -1,55 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>dashboard</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard</title>
     <script src="/dashboardpage/dashboardpage.js" defer></script>
     <link rel="stylesheet" href="../styles/style.css" />
   </head>
-  <body>
-    <div id="welcomediv" class="border">
-      <div id="welcome" class="border">
-        <h1>welcome, <span id="username">User</span>!</h1>
-      </div>
-      <div id="create_btn_div"class="border">
-        <button id="create_btn">Create Entry</button>
-      </div>
-      <div id="logoutdiv" class="border">
-        <button id="logout_btn" type="button">Logout</button>
-      </div>
-    </div>
-
-    <div id="formdiv" class="hide_box">
-      <form action="/api/logs" method="post">
-        <div class="border">
-          <div>
-            <label for="food_in">food:</label>
-            <input type="text" id="food_in" name="name" />
-          </div>
-
-          <div>
-            <label for="calorie_in">calorie:</label>
-            <input type="number" id="calorie_in" name="calorie" />
-          </div>
-
-          <div>
-            <label for="serving_size_in">serving size:</label>
-            <input type="number" id="serving_size_in" name="serving_size" />
-          </div>
+  <body class="dashboard">
+    <div class="dashboard-container">
+      <header id="welcomediv" class="dashboard-header">
+        <h1 class="title">Welcome, <span id="username">User</span>!</h1>
+        <div class="header-actions">
+          <button id="create_btn" class="btn btn-primary" type="button">Create Entry</button>
+          <button id="logout_btn" class="btn btn-ghost" type="button">Logout</button>
         </div>
+      </header>
 
-        <div id="dashboardbtndiv" class="border">
-          <div>
-            <input type="reset" />
+      <section id="formdiv" class="card hide_box">
+        <form action="/api/logs" method="post" class="form">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="food_in">Food</label>
+              <input type="text" id="food_in" name="name" placeholder="e.g., Chicken Salad" />
+            </div>
+
+            <div class="form-field">
+              <label for="calorie_in">Calories</label>
+              <input type="number" id="calorie_in" name="calorie" placeholder="e.g., 450" />
+            </div>
+
+            <div class="form-field">
+              <label for="serving_size_in">Serving Size</label>
+              <input type="number" id="serving_size_in" name="serving_size" placeholder="e.g., 1" />
+            </div>
           </div>
 
-          <div>
-            <input type="submit" />
+          <div id="dashboardbtndiv" class="form-actions">
+            <button type="reset" class="btn btn-secondary">Reset</button>
+            <button type="submit" class="btn btn-primary">Save</button>
           </div>
-        </div>
-      </form>
-    </div>
-    <div id="logsdiv" class="border">
-      <h3>your logs:</h3>
+        </form>
+      </section>
+
+      <section id="logsdiv" class="card">
+        <h3>Your logs:</h3>
+      </section>
     </div>
   </body>
+  
 </html>

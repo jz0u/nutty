@@ -218,7 +218,7 @@ function render_logs(logs) {
   }
 
   html += `
-    <table>
+    <table class="logs-table">
       <thead>
         <tr>
           <th>Date</th>
@@ -226,6 +226,7 @@ function render_logs(logs) {
           <th>Food</th>
           <th>Calories</th>
           <th>Serving Size</th>
+          <th class="actions-col">Actions</th>
         </tr>
       </thead>
       <tbody>

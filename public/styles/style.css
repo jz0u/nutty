@@ -10,16 +10,3 @@
   display:block;
 }
 
-#dashboardbtndiv{
-  display: flex;
-}
-
-#welcomediv{
-  display: flex;
-  justify-content: space-between;
-}
-#logoutdiv{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
