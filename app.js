@@ -35,6 +35,14 @@ app.get("/dashboard", (req, res) => {
 // error handler
 app.use(errorHandler);
 
+// Ensure MongoDB URI is provided
+if (!env.mongodbUri) {
+  console.error(
+    "\nMissing MongoDB connection string. Set 'mongodb_uri' or 'MONGODB_URI' in environment variables.\n"
+  );
+  process.exit(1);
+}
+
 mongoose
   .connect(env.mongodbUri)
   .then(() => {
@@ -43,6 +51,7 @@ mongoose
       console.log(`\nserver running on http://localhost:${env.port}\n`)
     );
   })
-  .catch(() => {
+  .catch((error) => {
     console.log("\nerror connecting to atlas\n");
+    console.error(error?.message || error);
   });
